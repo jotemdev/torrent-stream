@@ -2,7 +2,7 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import axios from 'axios';
 import { getTrendingUrl } from '../../../utils/tmdb';
 
-const getTrending = async (mediaType: 'movie' | 'tv' | 'person' | 'all') => {
+const getTrending = async (mediaType: string | string[]) => {
   try {
     const response = await axios.get(getTrendingUrl(mediaType));
     return response.data;
