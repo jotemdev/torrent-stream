@@ -7,6 +7,7 @@ export const makeApiRoute = (route: string) => `${baseUrl}${route}?api_key=${api
 export const routes = {
     trending: (mediaType: 'movie' | 'tv' | 'person' | 'all') => `/trending/${mediaType}/week`,
     search: (mediaType: 'movie' | 'tv' | 'person' ) => `/search/${mediaType}`,
+    genre: (mediaType: 'movie' | 'tv' | 'person' ) => `/genre/${mediaType}/list`,
     movie: {
         details: (id: string) => `/movie/${id}`,
         credits: (id: string) => `/movie/${id}/credits`,
@@ -36,6 +37,7 @@ export const routes = {
 
 export const getTrendingUrl = (mediaType) => makeApiRoute(routes.trending(mediaType))
 export const getSearchUrl = (mediaType) => makeApiRoute(routes.search(mediaType))
+export const getGenreUrl = (mediaType) => makeApiRoute(routes.genre(mediaType))
 
 export const getEntryRouteUrl = (id: string, type: string, route?: string) => {
     const routeName = route ? route : 'details'
@@ -52,5 +54,8 @@ export const apiVars = {
     imageUrl,
     routes,
     getEntryRouteUrl,
+    getTrendingUrl,
+    getSearchUrl,
+    getGenreUrl,
 }
 export default apiVars
