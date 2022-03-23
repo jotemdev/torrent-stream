@@ -1,22 +1,25 @@
-import React from 'react'
-import useMovieData from '../../hooks/useMovieData'
-import { useRouter } from 'next/router'
+import React from 'react';
+import useMovieData from '../../hooks/useMovieData';
+import { useRouter } from 'next/router';
+import { imageUrl } from '../../utils/tmdb';
 
 export default function Movie() {
-    const router = useRouter()
-    const movieId = router.query.id
-    const { isLoading, data, isError, error } = useMovieData(movieId)
-    
-    if (isLoading) return <p>Loading...</p>
-    
-    if (isError) return <p>{error.message}</p>
+  const router = useRouter();
+  const id = router.query.id;
+  const { isLoading, data, isError, error } = useMovieData(id);
 
-    const { title, poster_path, overview } = data.data
+  if (isLoading) return <p>Loading...</p>;
 
-    return (
-        <div>
-            <h2>{title}</h2>
-            <p>{overview}</p>
-        </div>
-    )
+  if (isError) return <p>{error.message}</p>;
+
+  const { title, poster_path, overview } = data.data;
+  const poster = imageUrl(poster_path);
+
+  return (
+    <div>
+      <h2>{title}</h2>
+      <img src={poster} alt={title} />
+      <p>{overview}</p>
+    </div>
+  );
 }
