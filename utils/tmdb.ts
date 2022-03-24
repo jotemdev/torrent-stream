@@ -6,24 +6,26 @@ export const imageUrl = (path: string) => `${imageBaseUrl}${imageSize}${path}`;
 export const makeApiRoute = (route: string) =>
   `${baseUrl}${route}?api_key=${apiKey}`;
 export const routes = {
-  trending: (mediaType: 'movie' | 'tv' | 'person' | 'all') =>
+  trending: (mediaType: string | string[]) =>
     makeApiRoute(`/trending/${mediaType}/week`),
-  search: (mediaType: 'movie' | 'tv' | 'person') =>
-    makeApiRoute(`/search/${mediaType}`),
-  genre: (mediaType: 'movie' | 'tv') =>
-    makeApiRoute(`/genre/${mediaType}/list`),
-  entry: (id: string, type: string, route?: string) => {
+  search: (mediaType: string) => makeApiRoute(`/search/${mediaType}`),
+  genre: (mediaType: string) => makeApiRoute(`/genre/${mediaType}/list`),
+  entry: (id: string | string[] | undefined, type: string, route?: string) => {
     const routeName = route ? '/' + route : '';
     const path = `/${type}/${id}${routeName}`;
     return makeApiRoute(path);
   },
 };
 
-export const getTrendingUrl = (mediaType) => routes.trending(mediaType);
-export const getSearchUrl = (mediaType) => routes.search(mediaType);
-export const getGenreUrl = (mediaType) => routes.genre(mediaType);
-export const getEntryRouteUrl = (id: string, type: string, route?: string) =>
-  routes.entry(id, type, route);
+export const getTrendingUrl = (mediaType: string | string[]) =>
+  routes.trending(mediaType);
+export const getSearchUrl = (mediaType: string) => routes.search(mediaType);
+export const getGenreUrl = (mediaType: string) => routes.genre(mediaType);
+export const getEntryRouteUrl = (
+  id: string | string[] | undefined,
+  type: string,
+  route?: string,
+) => routes.entry(id, type, route);
 
 export const apiVars = {
   baseUrl,
