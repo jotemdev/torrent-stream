@@ -1,25 +1,16 @@
-import React from 'react';
-import useMovieData from '../../hooks/useMovieData';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import { imageUrl } from '../../utils/tmdb';
+import Movie from '../../components/Movie';
 
-export default function Movie() {
+export default function MoviePage() {
   const router = useRouter();
-  const id = router.query.id;
-  const { isLoading, data, isError, error } = useMovieData(id);
+  const queryId = router.query.id;
+  const [isLoading, setIsLoading] = useState(true);
 
-  if (isLoading) return <p>Loading...</p>;
+  useEffect(() => {
+    if (!queryId) return;
+    setIsLoading(!queryId);
+  }, [queryId]);
 
-  if (isError) return <p>{error.message}</p>;
-
-  const { title, poster_path, overview } = data.data;
-  const poster = imageUrl(poster_path);
-
-  return (
-    <div>
-      <h2>{title}</h2>
-      <img src={poster} alt={title} />
-      <p>{overview}</p>
-    </div>
-  );
+  return isLoading ? <p>Loading...</p> : <Movie id={queryId} />;
 }
