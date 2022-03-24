@@ -1,6 +1,6 @@
 import type { NextPage } from 'next';
 import Link from 'next/link';
-import { Link as UILink } from '@chakra-ui/react';
+import { Link as UILink, Stack } from '@chakra-ui/react';
 
 import Head from 'next/head';
 import Image from 'next/image';
@@ -18,13 +18,16 @@ const Home: NextPage = () => {
       <main className={styles.main}>
         <h1 className={styles.title}>Welcome</h1>
 
-        <div className={styles.grid}>
+        <Stack className={styles.grid}>
           <Link href="/test">
             <UILink color="blue.500">
               Click here to navigate to the download page
             </UILink>
           </Link>
-        </div>
+          <Link href="/search">
+            <UILink color="blue.500">Search YTS</UILink>
+          </Link>
+        </Stack>
       </main>
 
       <footer className={styles.footer}>
