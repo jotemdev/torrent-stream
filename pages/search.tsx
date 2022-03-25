@@ -1,11 +1,78 @@
-import { useEffect, useState, useRef } from 'react';
+import {
+  useEffect,
+  useState,
+  useRef,
+  FormEvent,
+  SetStateAction,
+  Dispatch,
+} from 'react';
 
-export default function SearchPage() {
-  const [term, setTerm] = useState('');
+type Movie = {
+  title: string;
+  summary: string;
+  medium_cover_image: string;
+  year: number;
+  id: number;
+};
+
+const MovieItem = (movie: Movie) => {
+  const { id, title, year, summary, medium_cover_image } = movie;
+  return (
+    <div key={id}>
+      <h2>
+        {title} ({year})
+      </h2>
+      <img src={medium_cover_image} alt={title} />
+      <p>{summary}</p>
+    </div>
+  );
+};
+
+interface SearchFormProps {
+  onSearch: Dispatch<SetStateAction<string | number | undefined>>;
+}
+const SearchForm: React.FC<SearchFormProps> = ({ onSearch }) => {
+  const searchRef = useRef<HTMLInputElement>(null);
+  const handleSubmit = (e: FormEvent) => {
+    e.preventDefault();
+    if (!searchRef.current) return;
+    onSearch(searchRef.current.value);
+  };
+  return (
+    <form onSubmit={handleSubmit}>
+      <input type="text" ref={searchRef} />
+      <button onClick={handleSubmit}>Search</button>
+    </form>
+  );
+};
+
+interface SearchResultsProps {
+  isLoading: boolean;
+  results: Movie[];
+  error: Error | undefined;
+}
+const SearchResults: React.FC<SearchResultsProps> = ({
+  isLoading,
+  results,
+  error,
+}) => {
+  if (isLoading) return <p>Loading...</p>;
+  if (error) return <p>{error.message}</p>;
+  if (!results.length) return <p>No results found</p>;
+  return (
+    <>
+      {results.map((movie) => (
+        <MovieItem key={movie.id} {...movie} />
+      ))}
+    </>
+  );
+};
+
+const useSearch = () => {
+  const [term, setTerm] = useState<string | number | undefined>();
   const [results, setResults] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<Error>();
-  const searchRef = useRef<HTMLInputElement>(null);
 
   const fetchData = () => {
     setIsLoading(true);
@@ -21,38 +88,21 @@ export default function SearchPage() {
     if (term) fetchData();
   }, [term]);
 
-  const handleSubmit = () => {
-    if (!searchRef.current) return;
-    setTerm(searchRef.current.value);
+  return {
+    term,
+    setTerm,
+    results,
+    isLoading,
+    error,
   };
+};
 
-  const loading = isLoading ? <p>Loading...</p> : '';
-  const errorMessage = error ? <p>{error.message}</p> : '';
-  const resultList = !results.length
-    ? ''
-    : results.map((movie) => {
-        const { id, title, year, summary, medium_cover_image, torrents } =
-          movie;
-        return (
-          <div key={id}>
-            <h2>
-              {title} ({year})
-            </h2>
-            <img src={medium_cover_image} alt={title} />
-            <p>{summary}</p>
-          </div>
-        );
-      });
-
+export default function SearchPage() {
+  const search = useSearch();
   return (
-    <div>
-      <input type="text" ref={searchRef} />
-      <button onClick={handleSubmit} disabled={isLoading}>
-        Search
-      </button>
-      {errorMessage}
-      {loading}
-      {!isLoading && resultList}
-    </div>
+    <>
+      <SearchForm onSearch={search.setTerm} />
+      <SearchResults {...search} />
+    </>
   );
 }
