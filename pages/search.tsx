@@ -1,19 +1,19 @@
 import { useEffect, useState, useRef } from 'react';
 
 export default function SearchPage() {
-  const [term, setTerm] = useState();
+  const [term, setTerm] = useState('');
   const [results, setResults] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(null);
-  const searchRef = useRef(null);
+  const [error, setError] = useState<Error>();
+  const searchRef = useRef<HTMLInputElement>(null);
 
   const fetchData = () => {
     setIsLoading(true);
-    setError(null);
+    setError(undefined);
     fetch(`https://yts.mx/api/v2/list_movies.json?query_term=${term}`)
       .then((res) => res.json())
       .then((data) => setResults(data.data.movies))
-      .catch((err) => setError(err))
+      .catch((err: Error) => setError(err))
       .finally(() => setIsLoading(false));
   };
 
@@ -21,7 +21,8 @@ export default function SearchPage() {
     if (term) fetchData();
   }, [term]);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = () => {
+    if (!searchRef.current) return;
     setTerm(searchRef.current.value);
   };
 
@@ -46,7 +47,9 @@ export default function SearchPage() {
   return (
     <div>
       <input type="text" ref={searchRef} />
-      <button onClick={handleSubmit}>Search</button>
+      <button onClick={handleSubmit} disabled={isLoading}>
+        Search
+      </button>
       {errorMessage}
       {loading}
       {!isLoading && resultList}
