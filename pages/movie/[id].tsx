@@ -1,22 +1,16 @@
-import React from 'react'
-import useMovieData from '../../hooks/useMovieData'
-import { useRouter } from 'next/router'
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
+import Movie from '../../components/Movie';
 
-export default function Movie() {
-    const router = useRouter()
-    const movieId = router.query.id
-    const { isLoading, data, isError, error } = useMovieData(movieId)
-    
-    if (isLoading) return <p>Loading...</p>
-    
-    if (isError) return <p>{error.message}</p>
+export default function MoviePage() {
+  const router = useRouter();
+  const queryId = router.query.id;
+  const [isLoading, setIsLoading] = useState(true);
 
-    const { title, poster_path, overview } = data.data
+  useEffect(() => {
+    if (!queryId) return;
+    setIsLoading(!queryId);
+  }, [queryId]);
 
-    return (
-        <div>
-            <h2>{title}</h2>
-            <p>{overview}</p>
-        </div>
-    )
+  return isLoading ? <p>Loading...</p> : <Movie id={queryId} />;
 }
