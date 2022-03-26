@@ -4,14 +4,16 @@ import type { NextPage } from 'next';
 import Head from 'next/head';
 import styles from '../../styles/Home.module.css';
 
-import useTorrent from '../../hoooks/use-torrent';
+import useTorrent from '../../hooks/useTorrent';
 
 import { Button, Link as UILink } from '@chakra-ui/react';
 
 const Test: NextPage = () => {
-  const { file, download } = useTorrent();
-
   const outputElement = useRef<HTMLDivElement>(null);
+
+  const { isDownloading, isReady, progress, download } = useTorrent({
+    container: outputElement.current,
+  });
 
   const handleClick = () => {
     download(
@@ -20,10 +22,10 @@ const Test: NextPage = () => {
   };
 
   useEffect(() => {
-    if (file.isReady && outputElement.current) {
-      file.appendTo(outputElement.current);
+    if (outputElement.current && (isDownloading || isReady)) {
+      //file.appendTo(outputElement.current);
     }
-  }, [file.isReady]);
+  }, [progress]);
 
   return (
     <div className={styles.container}>
@@ -37,19 +39,9 @@ const Test: NextPage = () => {
         <h1 className={styles.title}>This is a test page.</h1>
         <Button onClick={handleClick}>Download Torrent</Button>
 
-        {file.isDownloading && !file.isReady && (
-          <div>Downloading: {file.progress}%</div>
-        )}
+        {isDownloading && !isReady && <div>Downloading: {progress}%</div>}
 
-        {file.isReady && (
-          <UILink href={file.url} isExternal>
-            File is ready - click here to open in a new tab!
-          </UILink>
-        )}
-
-        <div
-          style={{ maxWidth: '90%', margin: '0 auto' }}
-          ref={outputElement}></div>
+        <div id="video" ref={outputElement}></div>
       </main>
 
       <footer className={styles.footer}>This is a test footer.</footer>
