@@ -26,6 +26,8 @@ export const getEntryRouteUrl = (
   type: string,
   route?: string,
 ) => routes.entry(id, type, route);
+export const getSearchMovieUrl = (query: string) =>
+  `${getSearchUrl('movie')}&query=${query}`;
 
 export const apiVars = {
   baseUrl,
