@@ -26,8 +26,11 @@ export const getEntryRouteUrl = (
   type: string,
   route?: string,
 ) => routes.entry(id, type, route);
-export const getSearchMovieUrl = (query: string) =>
+export const getSearchMovieUrl = (query: string | string[] | undefined) =>
   `${getSearchUrl('movie')}&query=${query}`;
+export const findMovieByImdbIdUrl = (
+  imdb_code: string | string[] | undefined,
+) => `${baseUrl}/find/${imdb_code}?api_key=${apiKey}&external_source=imdb_id`;
 
 export const apiVars = {
   baseUrl,

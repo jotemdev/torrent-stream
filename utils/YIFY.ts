@@ -1,5 +1,8 @@
+import { searchQuery } from '../types';
+
 export const baseUrl = 'https://yts.mx/api/v2/list_movies.json';
-export const getSearchUrl = (query: string) => `${baseUrl}?query_term=${query}`;
+export const getSearchUrl = (query: searchQuery) =>
+  `${baseUrl}?query_term=${query}`;
 
 export const torrentTrackers = [
   'udp://wambo.club:1337/announce',
@@ -13,59 +16,13 @@ export const torrentTrackers = [
   'udp://p4p.arenabg.com:1337',
   'udp://tracker.leechers-paradise.org:6969',
   'udp://coppersurfer.tk:6969/announce',
-  'http://mgtracker.org:2710/announce',
-  'http://announce.torrentsmd.com:6969/announce',
-  'http://bt.careland.com.cn:6969/announce',
-  'http://tracker.best-torrents.net:6969/announce',
-  'http://pow7.com/announce',
-  'udp://9.rarbg.com:2710/announce',
-  'udp://9.rarbg.me:2780/announce',
-  'udp://9.rarbg.me:2710/announce',
-  'udp://9.rarbg.to:2730/announce',
-  'udp://91.218.230.81:6969/announce',
-  'udp://exodus.desync.com:6969/announce',
-  'udp://tracker.internetwarriors.net:1337',
-  'http://tracker.bittorrent.am/announce',
-  'http://bt.henbt.com:2710/announce',
-  'udp://tracker.uw0.xyz:6969/announce',
-  'udp://tracker.kamigami.org:2710/announce',
-  'http://tracker.files.fm:6969/announce',
-  'udp://opentracker.i2p.rocks:6969/announce',
-  'udp://tracker.zerobytes.xyz:1337/announce',
-  'https://tracker.nitrix.me:443/announce',
-  'http://novaopcj.icu:10325/announce',
-  'udp://aaa.army:8866/announce',
-  'https://tracker.imgoingto.icu:443/announce',
-  'udp://blokas.io:6969/announce',
-  'udp://api.bitumconference.ru:6969/announce',
-  'udp://cutiegirl.ru:6969/announce',
-  'udp://ln.mtahost.co:6969/announce',
-  'udp://vibe.community:6969/announce',
-  'udp://tracker.vulnix.sh:6969/announce',
-  'udp://wassermann.online:6969/announce',
-  'udp://kanal-4.de:6969/announce',
-  'udp://mts.tvbit.co:6969/announce',
-  'udp://adminion.n-blade.ru:6969/announce',
-  'udp://benouworldtrip.fr:6969/announce',
-  'udp://sd-161673.dedibox.fr:6969/announce',
-  'udp://47.ip-51-68-199.eu:6969/announce',
-  'udp://cdn-1.gamecoast.org:6969/announce',
-  'udp://daveking.com:6969/announce',
-  'http://rt.tace.ru:80/announce',
-  'udp://forever-tracker.zooki.xyz:6969/announce',
-  'udp://free-tracker.zooki.xyz:6969/announce',
-  'udp://tracker.publictracker.xyz:6969/announce',
-  'udp://tracker.skynetcloud.site:6969/announce',
-  'udp://tracker.altrosky.nl:6969/announce',
-  'http://5rt.tace.ru:60889/announce',
-  'https://tracker.lilithraws.cf:443/announce',
-  'http://tracker.sakurato.xyz:23333/announce',
-  'udp://open.stealth.si:80/announce',
-  'udp://zephir.monocul.us:6969/announce',
-  'http://tracker2.itzmx.com:6961/announce',
-  'http://tracker3.itzmx.com:6961/announce',
-  'http://h4.trakx.nibba.trade:80/announce',
 ];
 
-export const getMagnetLink = (torrentHash: string) =>
-  `magnet:?xt=urn:btih:${torrentHash}&tr=${torrentTrackers.join('&tr=')}`;
+export const getMagnetLink = (torrentHash: string, torrentName: string) => {
+  const trackers = torrentTrackers
+    .map((t) => encodeURIComponent(t))
+    .join('&tr=');
+  const dn = torrentName.replace(/ /g, '+');
+
+  return `magnet:?xt=urn:btih:08ada5a7a6183aae1e09d831df6748d566095a10&dn=blabla&tr=udp%3A%2F%2Fexplodie.org%3A6969&tr=udp%3A%2F%2Ftracker.coppersurfer.tk%3A6969&tr=udp%3A%2F%2Ftracker.empire-js.us%3A1337&tr=udp%3A%2F%2Ftracker.leechers-paradise.org%3A6969&tr=udp%3A%2F%2Ftracker.opentrackr.org%3A1337&tr=wss%3A%2F%2Ftracker.btorrent.xyz&tr=wss%3A%2F%2Ftracker.fastcast.nz&tr=wss%3A%2F%2Ftracker.openwebtorrent.com`;
+};
