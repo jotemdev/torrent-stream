@@ -1,7 +1,6 @@
 import { useContext } from 'react';
-import { UseQueryResult } from 'react-query';
 import { MovieContext } from '../pages/_app';
-import { Movie } from '../types';
+import { YTSMovie as Movie } from '../types';
 
 const useUpdateMovieList = () => {
   const { movieList, setMovieList } = useContext(MovieContext);

@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
-import { useQuery, UseQueryResult } from 'react-query';
+import { useQuery } from 'react-query';
 import useUpdateMovieList from './useUpdateMovieList';
 import { getSearchUrl } from '../utils/YIFY';
+import { searchQuery } from '../types';
 
-export const useSearch = (initialTerm?: string) => {
+export const useSearch = (initialTerm?: searchQuery) => {
   const [term, setTerm] = useState(initialTerm);
   const fetchSearchResults = () => {
     if (!term)

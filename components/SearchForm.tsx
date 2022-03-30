@@ -1,7 +1,8 @@
-import { Dispatch, FormEvent, SetStateAction, useRef } from 'react';
+import { InputGroup, Input, InputRightElement, Button } from '@chakra-ui/react';
+import { Dispatch, FormEvent, useRef } from 'react';
 
 interface SearchFormProps {
-  onSearch: Dispatch<SetStateAction<string | undefined>>;
+  onSearch: Dispatch<string>;
 }
 const SearchForm: React.FC<SearchFormProps> = ({ onSearch }) => {
   const searchRef = useRef<HTMLInputElement>(null);
@@ -12,8 +13,19 @@ const SearchForm: React.FC<SearchFormProps> = ({ onSearch }) => {
   };
   return (
     <form onSubmit={handleSubmit}>
-      <input type="text" ref={searchRef} />
-      <button onClick={handleSubmit}>Search</button>
+      <InputGroup size="md">
+        <Input
+          ref={searchRef}
+          pr="4.5rem"
+          type="search"
+          placeholder="Type movie name, or year"
+        />
+        <InputRightElement width="4.5rem">
+          <Button type="submit" h="1.75rem" size="sm">
+            Search
+          </Button>
+        </InputRightElement>
+      </InputGroup>
     </form>
   );
 };

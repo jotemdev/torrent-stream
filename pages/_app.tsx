@@ -2,11 +2,12 @@ import { createContext, useState } from 'react';
 import '../styles/globals.css';
 import '@fontsource/darker-grotesque/400.css';
 import '@fontsource/darker-grotesque/700.css';
-import theme from '../theme';
+import '@fontsource/dela-gothic-one';
+import theme from './theme';
 import type { AppProps } from 'next/app';
 import { ChakraProvider } from '@chakra-ui/react';
 import { QueryClient, QueryClientProvider } from 'react-query';
-import { Movie } from '../types';
+import { YTSMovie as Movie } from '../types';
 
 const queryClient = new QueryClient();
 
@@ -17,7 +18,7 @@ export const MovieContext = createContext(
   },
 );
 
-function MyApp({ Component, pageProps }: AppProps) {
+function MoovizApp({ Component, pageProps }: AppProps) {
   const [movieList, setMovieList] = useState([] as Movie[]);
   return (
     <QueryClientProvider client={queryClient}>
@@ -30,4 +31,4 @@ function MyApp({ Component, pageProps }: AppProps) {
   );
 }
 
-export default MyApp;
+export default MoovizApp;
