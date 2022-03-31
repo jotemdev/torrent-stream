@@ -1,5 +1,5 @@
 import { SimpleGrid } from '@chakra-ui/react';
-import { Movie } from '../types';
+import { YTSMovie as Movie } from '../types';
 import MovieItem from './MovieItem';
 
 interface MoviesListProps {
