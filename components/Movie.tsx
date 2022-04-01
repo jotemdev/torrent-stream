@@ -44,6 +44,10 @@ export default function Movie({ id }: Props) {
       <h2>{title}</h2>
       <img src={poster} alt={title} />
       <p>{overview}</p>
+
+      <div>Downloading: {progress}%</div>
+      <div id="video" ref={outputElement}></div>
+
       {torrentsData.length > 0 && (
         <ul>
           {torrentsData.map((torrent: Torrent) => {
@@ -62,7 +66,6 @@ export default function Movie({ id }: Props) {
           })}
         </ul>
       )}
-      <div id="video" ref={outputElement}></div>
     </div>
   );
 }
