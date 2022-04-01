@@ -3,7 +3,7 @@ import '../styles/globals.css';
 import '@fontsource/darker-grotesque/400.css';
 import '@fontsource/darker-grotesque/700.css';
 import '@fontsource/dela-gothic-one';
-import theme from './theme';
+import theme from '../theme';
 import type { AppProps } from 'next/app';
 import { ChakraProvider } from '@chakra-ui/react';
 import { QueryClient, QueryClientProvider } from 'react-query';
